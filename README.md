@@ -10,9 +10,9 @@ It's not a Linked Data Platform and does not aim for LDP compliance but rather p
 
 ## About 
 
-This platform uses Node.js, with the Express and Mongoose libraries to allow for rapid application development and quick protoyping.
+This platform uses Node.js, with the Express and Mongoose libraries to allow for rapid application development and quick protoyping for projects that involve structured data.
 
-If you don't need features like SPARQL support all you need is Node.js and MongoDB installed and you are good to go. You can also deploy it to Heroku.
+If you don't need features like SPARQL support all you need is Node.js and MongoDB installed. If you don't want to install anything locally you can also just deploy it to Heroku (there is a magic button for doing that below).
 
 The focus of this platform is utility and ease of use. It aims to be informed by and compliant with existing relevant standards.
 
@@ -24,7 +24,7 @@ It currently includes models for:
 * Events
 * Quotes
 
-These are currently very simple implmentations whcih are easy to expand on (all you need to do is update the corresponding model in the `./models/` directory).
+These are currently very simple implmentations which are easy to expand on (all you need to do is update the corresponding model in the `./models/` directory).
 
 Future releases will expand the existing models to include properties from models defined on schema.org and the ability to render them in JSON-LD.
 
@@ -43,25 +43,19 @@ You can check everything is working with `npm test`.
 
 Note: If you don't have a MongoDB database running locally you can specify a remote server by passing a connection string as an environment variable.
 
-e.g. 
-
     > MONGODB=mongodb://username:password@server.example.com:27017/db-name npm start
-
-## SPARQL and Triplestore support
-
-If you have a decicated triplestore you can use the _save_ and _remove_ hooks in `models/entity.js` to push updates to another data source on every create/update/delete request.
-
-AllegroGraph provides an easy way to sync a Triplestore with MongoDB.
-
-For a list of other Triplestores, see:  https://en.wikipedia.org/wiki/List_of_subject-predicate-object_databases.
 
 ## Deploy to Heroku
 
-If don't have Node.js and MongoDB set up locally and want to deploy it to Heroku you can use the following link deploy a free instance to try it out.
+If don't have Node.js and MongoDB set up locally and want to deploy it to Heroku you can use the following link deploy a free instance (it will also setup and connect to a free database with mLab for you too).
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/glitchdigital/structured-data-editor)
 
-This will automatically setup a free MongoDB instance with mlab.com.
+## SPARQL and Triplestore support
+
+If you have a decicated triplestore you can use the _save_ and _remove_ hooks in `models/entity.js` to push updates to another data source on every create/update/delete request. Alternatively, AllegroGraph provides an easy way to sync a Triplestore with MongoDB.
+
+For a list of Triplestores, see:  https://en.wikipedia.org/wiki/List_of_subject-predicate-object_databases.
 
 ## How to use the REST API
 
