@@ -1,0 +1,9 @@
+{
+  "name": "structured-data-editor",
+  "description": "A platform for managing Structured Data",
+  "website": "http://glitch.digital",
+  "repository": "https://github.com/glitch.digital/structured-data-editor",
+  "keywords": ["stuctured data", "entities"],
+  "success_url": "/",
+  "addons": ["mongolab:sandbox"]
+}

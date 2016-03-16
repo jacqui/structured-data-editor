@@ -1,7 +1,9 @@
 var entities = require('./entities');
 
 module.exports = function(app) {
-  
+
+  app.get('/', function(req, res, next) { res.json() });
+
   /**
    * Routes for Entities
    */

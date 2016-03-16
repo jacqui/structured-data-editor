@@ -59,7 +59,7 @@ For a list of other Triplestores, see:  https://en.wikipedia.org/wiki/List_of_su
 
 If don't have Node.js and MongoDB set up locally and want to deploy it to Heroku you can use the following link deploy a free instance to try it out.
 
-@TODO <insert link here>
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/glitchdigital/structured-data-editor)
 
 This will automatically setup a free MongoDB instance with mlab.com.
 
