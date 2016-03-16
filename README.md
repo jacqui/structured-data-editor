@@ -65,32 +65,32 @@ For working examples see the `tests` directory.
 
 HTTP GET to /entity/search
 
-    > curl http://localhost/entity/search/?name=John+Smith
-    > curl http://localhost/entity/search/?type=Person
+    > curl http://localhost:3000/entity/search/?name=John+Smith
+    > curl http://localhost:3000/entity/search/?type=Person
 
 ### Creating
 
 HTTP POST to /entity
 
-    > curl -X POST -d '{type: "Person", "name": "John Smith", "description": "Description goes here..."}' -H "Content-Type: application/json" http://localhost/entity
+    > curl -X POST -d '{"type": "Person", "name": "John Smith", "description": "Description goes here..."}' -H "Content-Type: application/json" http://localhost:3000/entity
 
 ### Retreiving
 
 HTTP GET to /entity/:id
 
-    > curl http://localhost/entity/9cb1a2bf7f5e321cf8ef0d15
+    > curl http://localhost:3000/entity/9cb1a2bf7f5e321cf8ef0d15
 
 ### Updating
 
 HTTP PUT to /entity/:id
 
-    > curl -X PUT -d '{type: "Person", "name": "John Smith", "description": "Updated description..."}' -H "Content-Type: application/json" http://localhost/entity/9cb1a2bf7f5e321cf8ef0d15
+    > curl -X PUT -d '{"type": "Person", "name": "John Smith", "description": "Updated description..."}' -H "Content-Type: application/json" http://localhost:3000/entity/9cb1a2bf7f5e321cf8ef0d15
 
 ### Delete
 
 HTTP DELETE to /entity/:id
 
-    > curl -X DELETE http://localhost/entity/9cb1a2bf7f5e321cf8ef0d15
+    > curl -X DELETE http://localhost:3000/entity/9cb1a2bf7f5e321cf8ef0d15
 
 ## Todo / known issues
 
