@@ -83,19 +83,49 @@ describe('Person API', function() {
     .send(person)
     .expect(200)
     .then(function(res) {
-      if (res.body.id != person.id)
-        return done(Error("Should be able to update a person and the ID should not change"));
+      // Look up the person again to see that the changes were saved
+      request(app)
+      .get('/entity/'+person.id)
+      .expect(200)
+      .then(function(res) {
+        if (res.body.id != person.id)
+          return done(Error("Should be able to update a person and the ID should not change"));
 
-      if (res.body.name != "Jane Smith")
-        return done(Error("Should be able to rename a person"));
-      
-      if (res.body.email != "jane.smith@example.com")
-        return done(Error("Should be able to update the email address for a person"));
-      
-      done();
+        if (res.body.name != "Jane Smith")
+          return done(Error("Should be able to rename a person and the change should be saved"));
+    
+        if (res.body.email != "jane.smith@example.com")
+          return done(Error("Should be able to update the email address for a person and the change shold be saved"));
+        done();
+      });
     });
   });
   
+  it('should be able to delete keys from a person', function(done) {
+    
+    delete person.description;
+    delete person.email;
+    
+    request(app)
+    .put('/entity/'+person.id)
+    .send(person)
+    .expect(200)
+    .then(function(res) {
+      // Look up the person again to see that the changes were saved
+      request(app)
+      .get('/entity/'+person.id)
+      .expect(200)
+      .then(function(res) {
+        if (res.body.description)
+          return done(Error("Should be able to remove a description from a person"));
+        if (res.body.email)
+          return done(Error("Should be able to remove an email address from a person"));
+        done();
+      });
+    });
+  });
+
+
   it('should be able to delete a person', function(done) {
     request(app)
     .delete('/entity/'+person.id)

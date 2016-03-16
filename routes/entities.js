@@ -79,19 +79,24 @@ module.exports = new function() {
 
       var entity = req.body;
       
-      entity = Entity.getEntityByType(entityInDatabase._type, entity, true);
-      if (entity === null)
-        res.status(500).json({ error: "Entity is of invalid type." });
+      // These properties are immutable (as far as the API is concerned)
+      entity._id = entityInDatabase._id;
+      entity.__v = entityInDatabase.__v;
+      entity._type = entityInDatabase._type;
+      entity.createdOn = entityInDatabase.createdOn;
+      entity.updatedOn = entityInDatabase.updatedOn;
 
-      // Ignore changes to fields we want to regard as immutable, and persist 
-      // the values (e.g. carry over existing values for keys like createdOn)
-      Entity.immutable.forEach(function(key) {
-        entity[key] = entityInDatabase[key];
-      });
-
-      // Save changes to entity
-      entity.save(function(err, entity) {
-        if (err) return res.status(500).json({ error: "Unable to update entity." });
+      // Save changes to entity by first getting back a blank entity and then
+      // passing update() to it. This is slightly cumberson but Mongoose 4.x
+      // seems to have broken how hydrate/init works and saves siliently fail
+      // if you just hydrate/init and .save()
+      //
+      // @FIXME: runValidators: true DOES NOT WORK. so values like 'required'
+      // are ignored (and fields that should be required can be removed).
+      Entity
+      .getEntityByType(entityInDatabase._type)
+      .update({ _id: entity._id }, entity, {overwrite: true, runValidators: true}, function(err, raw) {
+        if (err) return res.status(500).json({ error: "Unable to save changes to entity." });
         res.json(entity);
       });
     });

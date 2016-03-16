@@ -24,15 +24,12 @@ module.exports = new function() {
     },
     sameAs: [String],
     primaryTopicOf: [String],
-    createdOn: Date,
-    updatedOn: Date
+    createdOn: { type: Date, default: Date.now },
+    updatedOn: { type: Date, default: Date.now }
   }, {
     collection       : 'entities',
     discriminatorKey : '_type'
   });
-
-  // Properties we don't want people to modify directly via the API
-  this.immutable = ['_id', '__v', '_shortCode', '_type', 'createdOn', 'updatedOn'];
 
   // Define behaviour for serialising entities to JSON
   this.schema.methods.toJSON = function() {
@@ -45,7 +42,11 @@ module.exports = new function() {
   };
 
   this.schema.pre('save', function(next) {
+    if (!this.isNew)
+      this.updatedOn = new Date();
+
     // Insert hook to push updates to other platforms (e.g. Triplestore) here…
+    
     next();
   });
 
@@ -59,10 +60,8 @@ module.exports = new function() {
    *
    * @param {string} type    - A valid type. e.g. 'Person', 'Place', 'Event'…
    * @param {Object} entity  - An entity object
-   * @param {Boolean} update - Set to true if this is an existing model in the
-   *                           database that you want to update.
    */
-  this.getEntityByType = function(type, entity, update) {
+  this.getEntityByType = function(type, entity) {
     
     // Load all the entity types we know about
     // Note: This happens inside the function as it can't be done until 
@@ -72,22 +71,22 @@ module.exports = new function() {
         Organization = require('../models/entities/organization'),
         Event = require('../models/entities/event'),
         Quote = require('../models/entities/quote');
-
+        
     switch(type) {
       case 'Person':
-        return (update) ? new Person(undefined, undefined, true).init(entity) : new Person(entity);
+        return (entity) ? new Person(entity) : Person;
         break;
       case 'Organization':
-        return (update) ? new Organization(undefined, undefined, true).init(entity) : new Organization(entity);
+        return (entity) ? new Organization(entity) : Organization;
         break;
       case 'Place':
-        return (update) ? new Place(undefined, undefined, true).init(entity) : new Place(entity);
+        return (entity) ? new Place(entity) : Place;
         break;
       case 'Event':
-        return (update) ? new Event(undefined, undefined, true).init(entity) : new Event(entity);
+        return (entity) ? new Event(entity) : Event;
         break;
       case 'Quote':
-        return (update) ? new Quote(undefined, undefined, true).init(entity) : new Quote(entity);
+        return (entity) ? new Quote(entity) : Quote;
         break;
       default:
         return null;
