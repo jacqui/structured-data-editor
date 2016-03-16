@@ -11,7 +11,7 @@ mongoose.connection.on('error', function(err) {
 });
 
 // Connect to the Mongo DB
-mongoose.connect( process.env.MONGODB ? process.env.MONGODB : 'mongodb://localhost/project-echo');
+mongoose.connect( process.env.MONGODB || process.env.MONGOLAB_URI || 'mongodb://localhost/structured-data' );
 
 // Configure Express to handle JSON requests
 app.use(bodyParser.json());
