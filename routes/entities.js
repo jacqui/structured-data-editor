@@ -17,13 +17,13 @@ module.exports = new function() {
         
     var entity = req.body;
 
-    entity = Entity.getEntityByType(req.body.type, entity);
+    entity = Entity.new(req.body.type, entity);
     if (entity === null)
-      res.status(400).json({ error: "Invalid entity type specified." });
+      return res.status(400).json({ error: "Invalid entity type specified." });
     
     entity.save(function(err, entity) {
       if (err) return res.status(500).json({ error: "Unable to create entity." });
-      res.status(201).json(entity);
+      return res.status(201).json(entity);
     });
   };
 
@@ -34,7 +34,8 @@ module.exports = new function() {
     if (req.params.id === null)
       return res.status(400).json({ error: "Entity ID required" });
 
-    // @TODO Check ID is valid ObjectId format (for now just throws 500 error)
+    if (!mongoose.Types.ObjectId.isValid(req.params.id))
+      return res.status(400).json({ error: "Entity ID format invalid" });
     
     mongoose.connection.db
     .collection('entities')
@@ -45,16 +46,16 @@ module.exports = new function() {
         return res.status(404).json({ error: "Entity ID not valid" });
 
       // Use the appropriate model based on the entity type
-      entity = Entity.getEntityByType(entity._type, entity);
+      entity = Entity.new(entity._type, entity);
       if (entity === null)
         return res.status(500).json({ error: "Unable to return entity - entity is of unknown type" });
 
       if (/application\/ld+json;/.test(req.get('accept'))) {
         // Return JSON-LD if supported
-        res.json(entity.toJSONLD);
+        return res.json(entity.toJSONLD);
       } else {
         // Otherwise return plain JSON object
-        res.json(entity);
+        return res.json(entity);
       }
     });
 
@@ -66,8 +67,9 @@ module.exports = new function() {
   this.update = function(req, res) {
     if (req.params.id === null)
       return res.status(400).json({ error: "Entity ID required" });
-
-    // @TODO Check ID is valid ObjectId format (for now just throws 500 error)
+    
+    if (!mongoose.Types.ObjectId.isValid(req.params.id))
+      return res.status(400).json({ error: "Entity ID format invalid" });
     
     mongoose.connection.db
     .collection('entities')
@@ -94,10 +96,10 @@ module.exports = new function() {
       // @FIXME: runValidators: true DOES NOT WORK. so values like 'required'
       // are ignored (and fields that should be required can be removed).
       Entity
-      .getEntityByType(entityInDatabase._type)
+      .new(entityInDatabase._type)
       .update({ _id: entity._id }, entity, {overwrite: true, runValidators: true}, function(err, raw) {
         if (err) return res.status(500).json({ error: "Unable to save changes to entity." });
-        res.json(entity);
+        return res.json(entity);
       });
     });
   };
@@ -109,8 +111,9 @@ module.exports = new function() {
     if (req.params.id === null)
       return res.status(400).json({ error: "Entity ID required" });
 
-    // @TODO Check ID is valid ObjectId format (for now just throws 500 error)
-    
+    if (!mongoose.Types.ObjectId.isValid(req.params.id))
+      return res.status(400).json({ error: "Entity ID format invalid" });
+
     mongoose.connection.db
     .collection('entities')
     .remove({_id: mongoose.Types.ObjectId(req.params.id)}, function(err, entity) {
@@ -146,7 +149,7 @@ module.exports = new function() {
       // For each result, format it using the appropriate Entity model
       var entities = [];
       results.forEach(function(entity) {
-        entities.push( Entity.getEntityByType(entity._type, entity, true) );
+        entities.push( Entity.new(entity._type, entity, true) );
       });
       
       return res.status(200).json(entities);

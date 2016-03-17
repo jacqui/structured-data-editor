@@ -144,5 +144,14 @@ describe('Person API', function() {
         return done(Error("Should not be able to get a person by ID once they have been deleted"));
       done();
     });
-  }); 
+  });
+  
+  it('should get 400 malformed error for an invalid object ID', function(done) {
+    request(app)
+    .get('/entity/abc123')
+    .expect(400)
+    .then(function(res) {
+      done();
+    });
+  });
 });

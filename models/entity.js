@@ -56,12 +56,12 @@ module.exports = new function() {
   });
   
   /**
-   * Load an entity using a specific Entity model based on the type supplied.
+   * Return a new entity of given type
    *
    * @param {string} type    - A valid type. e.g. 'Person', 'Place', 'Event'…
-   * @param {Object} entity  - An entity object
+   * @param {Object} entity  - An entity object (optional)
    */
-  this.getEntityByType = function(type, entity) {
+  this.new = function(type, entity) {
     
     // Load all the entity types we know about
     // Note: This happens inside the function as it can't be done until 
