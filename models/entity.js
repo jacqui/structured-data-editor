@@ -37,7 +37,7 @@ module.exports = new function() {
   }
 
   // Define behaviour for serialising entities to JSON-LD
-  this.schema.methods.toJSONLD = function() {
+  this.toJSONLD = function() {
     return serialize.toJSONLD(this.toObject());
   };
 

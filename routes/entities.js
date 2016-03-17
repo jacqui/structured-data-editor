@@ -4,7 +4,8 @@ var mongoose = require('mongoose'),
     Place = require('../models/entities/place'),
     Organization = require('../models/entities/organization'),
     Event = require('../models/entities/event'),
-    Quote = require('../models/entities/quote');
+    Quote = require('../models/entities/quote'),
+    serialize = require('../lib/serialize');
 
 module.exports = new function() {
 
@@ -50,11 +51,9 @@ module.exports = new function() {
       if (entity === null)
         return res.status(500).json({ error: "Unable to return entity - entity is of unknown type" });
 
-      if (/application\/ld+json;/.test(req.get('accept'))) {
-        // Return JSON-LD if supported
-        return res.json(entity.toJSONLD);
+      if (/application\/ld\+json/.test(req.get('accept'))) {
+        return res.json(serialize.toJSONLD(entity.toObject()));
       } else {
-        // Otherwise return plain JSON object
         return res.json(entity);
       }
     });
@@ -149,7 +148,11 @@ module.exports = new function() {
       // For each result, format it using the appropriate Entity model
       var entities = [];
       results.forEach(function(entity) {
-        entities.push( Entity.new(entity._type, entity, true) );
+        if (/application\/ld\+json/.test(req.get('accept'))) {
+          entities.push( serialize.toJSONLD(Entity.new(entity._type, entity).toObject()) );
+        } else {
+          entities.push( Entity.new(entity._type, entity) );
+        }
       });
       
       return res.status(200).json(entities);

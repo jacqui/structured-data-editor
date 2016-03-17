@@ -68,6 +68,10 @@ HTTP GET to /entity/search
     > curl http://localhost:3000/entity/search/?name=John+Smith
     > curl http://localhost:3000/entity/search/?type=Person
 
+To request entities as JSON-LD (still in development):
+
+    > curl -H "Accept: application/ld+json" http://localhost:3000/entity/search/?type=Person
+
 ### Creating
 
 HTTP POST to /entity
@@ -79,6 +83,10 @@ HTTP POST to /entity
 HTTP GET to /entity/:id
 
     > curl http://localhost:3000/entity/9cb1a2bf7f5e321cf8ef0d15
+
+To request entities as JSON-LD (still in development):
+
+    > curl -H "Accept: application/ld+json" http://localhost:3000/entity/9cb1a2bf7f5e321cf8ef0d15
 
 ### Updating
 
