@@ -53,13 +53,13 @@ If don't have Node.js and MongoDB set up locally and want to deploy it to Heroku
 
 ## SPARQL and Triplestore support
 
-If you have a decicated triplestore you can use the _save_ and _remove_ hooks in `models/entity.js` to push updates to another data source on every create/update/delete request. Alternatively, AllegroGraph provides an easy way to sync a Triplestore with MongoDB.
+If you have a dedicated triplestore you can use the _save_ and _remove_ hooks in `models/entity.js` to push updates to another data source on every create/update/delete request. Alternatively, AllegroGraph provides an easy way to sync a Triplestore with MongoDB.
 
 For a list of Triplestores, see:  https://en.wikipedia.org/wiki/List_of_subject-predicate-object_databases.
 
 ## How to use the REST API
 
-For working examples see the `tests` directory.
+For working examples see the `test` directory.
 
 ### Searching
 
