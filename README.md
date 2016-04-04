@@ -2,7 +2,7 @@
 
 **Important! This is a pre-version-1.0 development release**
 
-This is a simple platform with Search, Create, Retreive, Update and Delete (SCRUD) methods for managing Structured Data.
+This is a simple platform with Search, Create, Retrieve, Update and Delete (SCRUD) methods for managing Structured Data.
 
 It comes with models for People, Places, Organizations, Events and Quotes and is easy to extend with additional models.
 
@@ -53,13 +53,13 @@ If don't have Node.js and MongoDB set up locally and want to deploy it to Heroku
 
 ## SPARQL and Triplestore support
 
-If you have a decicated triplestore you can use the _save_ and _remove_ hooks in `models/entity.js` to push updates to another data source on every create/update/delete request. Alternatively, AllegroGraph provides an easy way to sync a Triplestore with MongoDB.
+If you have a dedicated triplestore you can use the _save_ and _remove_ hooks in `models/entity.js` to push updates to another data source on every create/update/delete request. Alternatively, AllegroGraph provides an easy way to sync a Triplestore with MongoDB.
 
 For a list of Triplestores, see:  https://en.wikipedia.org/wiki/List_of_subject-predicate-object_databases.
 
 ## How to use the REST API
 
-For working examples see the `tests` directory.
+For working examples see the `test` directory.
 
 ### Searching
 
@@ -78,7 +78,7 @@ HTTP POST to /entity
 
     > curl -X POST -d '{"type": "Person", "name": "John Smith", "description": "Description goes here..."}' -H "Content-Type: application/json" http://localhost:3000/entity
 
-### Retreiving
+### Retrieving
 
 HTTP GET to /entity/:id
 
