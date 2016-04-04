@@ -2,7 +2,7 @@
 
 **Important! This is a pre-version-1.0 development release**
 
-This is a simple platform with Search, Create, Retreive, Update and Delete (SCRUD) methods for managing Structured Data.
+This is a simple platform with Search, Create, Retrieve, Update and Delete (SCRUD) methods for managing Structured Data.
 
 It comes with models for People, Places, Organizations, Events and Quotes and is easy to extend with additional models.
 
@@ -78,7 +78,7 @@ HTTP POST to /entity
 
     > curl -X POST -d '{"type": "Person", "name": "John Smith", "description": "Description goes here..."}' -H "Content-Type: application/json" http://localhost:3000/entity
 
-### Retreiving
+### Retrieving
 
 HTTP GET to /entity/:id
 
