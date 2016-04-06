@@ -3,7 +3,9 @@ var mongoose = require('mongoose'),
     EntitySchema = require('../entity').schema;
 
 var schema = EntitySchema.extend({
-  dateFounded: Date
+  foundingDate: Date,
+  dissolutionDate: Date,
+  legalName: String
 });
 
 module.exports = mongoose.model('Organization', schema);
