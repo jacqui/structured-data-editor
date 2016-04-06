@@ -5,7 +5,10 @@ var mongoose = require('mongoose'),
 var schema = EntitySchema.extend({
   email: String,
   birthDate: Date,
-  deathDate: Date
+  deathDate: Date,
+  nationality: String,
+  jobTitle: String
+
 });
 
 module.exports = mongoose.model('Person', schema);
