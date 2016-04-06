@@ -9,7 +9,7 @@ require 'json'
 #@docs = []
 #@countries = []
 
-csv_rows = CSV.table("./en.csv")
+csv_rows = CSV.table("./data/en.csv")
 
 countries = {}
 docs = {}
