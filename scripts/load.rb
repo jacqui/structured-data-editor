@@ -19,17 +19,12 @@ people = {}
 csv_rows.group_by{|r| r[:id]}.each_pair do |story_id, rows|
   next if story_id == "X"
 
-  puts "Parsing entry ##{story_id}..."
-
   story = {:id => story_id}
-  puts "created story #{story}"
-
   story_docs = {}
 
   docs[story_id] ||= []
   people[story_id] ||= {}
 
-  puts "iterating over rows"
   rows.each do |row|
     case row[:fieldname]
     when "story-title"
@@ -80,25 +75,34 @@ csv_rows.group_by{|r| r[:id]}.each_pair do |story_id, rows|
       doc_data[:pos] = sd_id
       docs[story_id] << doc_data
   end
-
 end
 
 entries = @stories.group_by{|s| s[:id]}
 
-puts "Countries found: #{countries.size}."
-puts
-puts "... #{entries.size} total entries"
-puts
+#puts "Countries found: #{countries.size}."
 
 
-entries.each do |id, entities|
-  puts "Entry ##{id} has:"
-  entities.uniq!
-  byebug
-  puts " - #{entities.size} entities"
-  puts entities.first
-  puts
-  puts " - #{docs[id].size} docs"
-  puts docs[id].first
+puts "People count before:"
+puts `curl -s -H "Content-Type: application/json" "http://localhost:3000/entity/search/?type=Person" | jq '. | length'`
+puts 
+
+curl_cmds = []
+people.each do |id, person|
+  name = person[:name]
+  desc = person[:"description-if-politician"]
+
+  if desc.nil? || desc =~ /^\s*$/
+    desc = entries[id].first[:title]
+  end
+
+  curl_cmd = %Q|curl -s -XPOST -d '{"type": "Person", "name": "#{name}", "description": "#{desc}"}' -H "Content-Type: application/json" http://localhost:3000/entity|
+  puts curl_cmd
+  curl_cmds << curl_cmd
+#  `#{curl_cmd}`
 end
 
+File.open("scripts/load_people", "w") do |f|
+  curl_cmds.each do |cmd|
+    f.write cmd
+  end
+end
